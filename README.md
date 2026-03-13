@@ -27,13 +27,10 @@ conn, addr = server.accept()
 print("Connected from:", addr)
 
 try:
-    # Receive filename length first (4 bytes)
     filename_length = struct.unpack('I', conn.recv(4))[0]
 
-    # Receive filename
     filename = conn.recv(filename_length).decode()
 
-    # Receive file size (8 bytes)
     filesize = struct.unpack('Q', conn.recv(8))[0]
 
     print(f"Receiving file: {filename}")
@@ -84,13 +81,10 @@ try:
 
     filesize = os.path.getsize(filename)
 
-    # Send filename length (4 bytes)
     client.send(struct.pack('I', len(filename)))
 
-    # Send filename
     client.send(filename.encode())
 
-    # Send filesize (8 bytes)
     client.send(struct.pack('Q', filesize))
 
     print(f"Sending {filename} ({filesize} bytes)")
